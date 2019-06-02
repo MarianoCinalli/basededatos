@@ -1,12 +1,12 @@
 CREATE TABLE subreddits (
-    nombre_subreddit varchar(20),
+    nombre_subreddit varchar(100),
     descripcion_subreddit text,
     CONSTRAINT PK_subreddits PRIMARY KEY (nombre_subreddit)
 );
 
 CREATE TABLE usuarios (
-    username varchar(20),
-    display_name varchar(20),
+    username varchar(100),
+    display_name varchar(100),
     about text,
     email varchar(320),
     coins integer,
@@ -26,13 +26,13 @@ CREATE TABLE aporte (
 
 CREATE TABLE mensajes_privados (
     id_mensaje integer,
-    tema char(50),
+    tema char(200),
     texto text,
     CONSTRAINT PK_mensajes_privados PRIMARY KEY (id_mensaje)
 );
 
 CREATE TABLE premios (
-    nombre_premio char(50),
+    nombre_premio char(200),
     descripcion_premio text,
     CONSTRAINT PK_premios PRIMARY KEY (nombre_premio)
 );
@@ -44,8 +44,8 @@ CREATE TABLE transferencias (
 );
 
 CREATE TABLE multireddits (
-    nombre_multireddit varchar(20) NOT NULL UNIQUE,
-    username varchar(20),
+    nombre_multireddit varchar(100) NOT NULL UNIQUE,
+    username varchar(100),
     fecha_creacion_multireddit timestamp,
     CONSTRAINT PK_multireddits PRIMARY KEY (username, nombre_multireddit),
     CONSTRAINT FK_multireddits_usuarios FOREIGN KEY (username) REFERENCES usuarios (username) 
@@ -53,7 +53,7 @@ CREATE TABLE multireddits (
 
 CREATE TABLE reglas (
     id_regla integer NOT NULL UNIQUE,
-    nombre_subreddit varchar(20),
+    nombre_subreddit varchar(100),
     descripcion_regla text,
     CONSTRAINT PK_reglas PRIMARY KEY (nombre_subreddit, id_regla),
     CONSTRAINT FK_reglas_subreddits FOREIGN KEY (nombre_subreddit) REFERENCES subreddits (nombre_subreddit) 
@@ -62,7 +62,7 @@ CREATE TABLE reglas (
 CREATE TABLE posts (
     id_posts integer,
     id_aporte integer,
-    titulo varchar(20),
+    titulo varchar(100),
     CONSTRAINT PK_posts PRIMARY KEY (id_posts),
     CONSTRAINT FK_posts_aportes FOREIGN KEY (id_aporte) REFERENCES aporte (id_aporte)
 );
@@ -77,9 +77,9 @@ CREATE TABLE comments (
 -- relaciones
 
 CREATE TABLE multireddit_agrupa_subreddit (
-    username varchar(20),
-    nombre_multireddit varchar(20),
-    nombre_subreddit varchar(20),
+    username varchar(100),
+    nombre_multireddit varchar(100),
+    nombre_subreddit varchar(100),
     CONSTRAINT PK_multireddit_agrupa_subreddit PRIMARY KEY (username, nombre_multireddit, nombre_subreddit),
     CONSTRAINT FK_multireddit_agrupa_subreddit_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
     CONSTRAINT FK_multireddit_agrupa_subreddit_multireddits FOREIGN KEY (nombre_multireddit) REFERENCES multireddits (nombre_multireddit),
@@ -87,15 +87,15 @@ CREATE TABLE multireddit_agrupa_subreddit (
 );
 
 CREATE TABLE subreddit_recomienda_subreddit (
-    nombre_subreddit varchar(20),
-    nombre_subreddit_recomendado varchar(20),
+    nombre_subreddit varchar(100),
+    nombre_subreddit_recomendado varchar(100),
     CONSTRAINT PK_subreddit_recomienda_subreddit PRIMARY KEY (nombre_subreddit, nombre_subreddit_recomendado),
     CONSTRAINT FK_subreddit_recomienda_subreddit_subreddits FOREIGN KEY (nombre_subreddit) REFERENCES subreddits (nombre_subreddit),
     CONSTRAINT FK_subreddit_recomienda_subreddit_recomendado_subreddits FOREIGN KEY (nombre_subreddit_recomendado) REFERENCES subreddits (nombre_subreddit)
 );
 
 CREATE TABLE subreddit_regulador_por_regla (
-    nombre_subreddit varchar(20),
+    nombre_subreddit varchar(100),
     id_regla integer,
     CONSTRAINT PK_subreddit_regulador_por_regla PRIMARY KEY (nombre_subreddit, id_regla),
     CONSTRAINT FK_subreddit_regulador_por_regla_subreddits FOREIGN KEY (nombre_subreddit) REFERENCES subreddits (nombre_subreddit),
@@ -104,7 +104,7 @@ CREATE TABLE subreddit_regulador_por_regla (
 );
 
 CREATE TABLE subreddit_contiene_post (
-    nombre_subreddit varchar(20),
+    nombre_subreddit varchar(100),
     id_post integer,
     CONSTRAINT PK_subreddit_contiene_post PRIMARY KEY (nombre_subreddit, id_post),
     CONSTRAINT FK_subreddit_contiene_post_subreddits FOREIGN KEY (nombre_subreddit) REFERENCES subreddits (nombre_subreddit),
@@ -137,32 +137,32 @@ CREATE TABLE aporte_referencia_link (
 -- usuario - subreddit
 
 CREATE TABLE usuario_establece_subreddit (
-    username varchar(20),
-    nombre_subreddit varchar(20),
+    username varchar(100),
+    nombre_subreddit varchar(100),
     CONSTRAINT PK_usuario_establece_subreddit PRIMARY KEY (username, nombre_subreddit),
     CONSTRAINT FK_usuario_establece_subreddit_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
     CONSTRAINT FK_usuario_establece_subreddit_subreddits FOREIGN KEY (nombre_subreddit) REFERENCES subreddits (nombre_subreddit)
 );
 
 CREATE TABLE usuario_modera_subreddit (
-    username varchar(20),
-    nombre_subreddit varchar(20),
+    username varchar(100),
+    nombre_subreddit varchar(100),
     CONSTRAINT PK_usuario_modera_subreddit PRIMARY KEY (username, nombre_subreddit),
     CONSTRAINT FK_usuario_modera_subreddit_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
     CONSTRAINT FK_usuario_modera_subreddit_subreddits FOREIGN KEY (nombre_subreddit) REFERENCES subreddits (nombre_subreddit)
 );
 
 CREATE TABLE usuario_esta_bloqueado_subreddit (
-    username varchar(20),
-    nombre_subreddit varchar(20),
+    username varchar(100),
+    nombre_subreddit varchar(100),
     CONSTRAINT PK_usuario_esta_bloqueado_subreddit PRIMARY KEY (username, nombre_subreddit),
     CONSTRAINT FK_usuario_esta_bloqueado_subreddit_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
     CONSTRAINT FK_usuario_esta_bloqueado_subreddit_subreddits FOREIGN KEY (nombre_subreddit) REFERENCES subreddits (nombre_subreddit)
 );
 
 CREATE TABLE usuario_suscrito_subreddit (
-    username varchar(20),
-    nombre_subreddit varchar(20),
+    username varchar(100),
+    nombre_subreddit varchar(100),
     CONSTRAINT PK_usuario_suscrito_subreddit PRIMARY KEY (username, nombre_subreddit),
     CONSTRAINT FK_usuario_suscrito_subreddit_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
     CONSTRAINT FK_usuario_suscrito_subreddit_subreddits FOREIGN KEY (nombre_subreddit) REFERENCES subreddits (nombre_subreddit)
@@ -171,7 +171,7 @@ CREATE TABLE usuario_suscrito_subreddit (
 -- usuario - post
 
 CREATE TABLE usuario_califica_post (
-    username varchar(20),
+    username varchar(100),
     id_post integer,
     voto integer,
     CONSTRAINT PK_usuario_califica_post PRIMARY KEY (username, id_post),
@@ -180,7 +180,7 @@ CREATE TABLE usuario_califica_post (
 );
 
 CREATE TABLE usuario_guarda_post (
-    username varchar(20),
+    username varchar(100),
     id_post integer,
     CONSTRAINT PK_usuario_guarda_post PRIMARY KEY (username, id_post),
     CONSTRAINT FK_usuario_guarda_post_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
@@ -188,7 +188,7 @@ CREATE TABLE usuario_guarda_post (
 );
 
 CREATE TABLE usuario_reporta_post_segun_regla (
-    username varchar(20),
+    username varchar(100),
     id_post integer,
     id_regla integer,
     CONSTRAINT PK_usuario_reporta_post_segun_regla PRIMARY KEY (username, id_post, id_regla),
@@ -198,7 +198,7 @@ CREATE TABLE usuario_reporta_post_segun_regla (
 );
 
 CREATE TABLE usuario_genera_post (
-    username varchar(20),
+    username varchar(100),
     id_post integer,
     CONSTRAINT PK_usuario_genera_post PRIMARY KEY (username, id_post),
     CONSTRAINT FK_usuario_genera_post_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
@@ -208,7 +208,7 @@ CREATE TABLE usuario_genera_post (
 -- Usuario - comment
 
 CREATE TABLE usuario_califica_comment (
-    username varchar(20),
+    username varchar(100),
     id_comment integer,
     voto integer,
     CONSTRAINT PK_usuario_califica_comment PRIMARY KEY (username, id_comment),
@@ -217,7 +217,7 @@ CREATE TABLE usuario_califica_comment (
 );
 
 CREATE TABLE usuario_guarda_comment (
-    username varchar(20),
+    username varchar(100),
     id_comment integer,
     CONSTRAINT PK_usuario_guarda_comment PRIMARY KEY (username, id_comment),
     CONSTRAINT FK_usuario_guarda_comment_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
@@ -225,7 +225,7 @@ CREATE TABLE usuario_guarda_comment (
 );
 
 CREATE TABLE usuario_reporta_comment_segun_regla (
-    username varchar(20),
+    username varchar(100),
     id_comment integer,
     id_regla integer,
     CONSTRAINT PK_usuario_reporta_comment_segun_regla PRIMARY KEY (username, id_comment, id_regla),
@@ -235,7 +235,7 @@ CREATE TABLE usuario_reporta_comment_segun_regla (
 );
 
 CREATE TABLE usuario_genera_comment (
-    username varchar(20),
+    username varchar(100),
     id_comment integer,
     CONSTRAINT PK_usuario_genera_comment PRIMARY KEY (username, id_comment),
     CONSTRAINT FK_usuario_genera_comment_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
@@ -245,8 +245,8 @@ CREATE TABLE usuario_genera_comment (
 -- Usuario - premio
 
 CREATE TABLE usuario_gana_premio (
-    username varchar(20),
-    nombre_premio char(50),
+    username varchar(100),
+    nombre_premio char(200),
     CONSTRAINT PK_usuario_gana_premio PRIMARY KEY (username, nombre_premio),
     CONSTRAINT FK_usuario_gana_premio_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
     CONSTRAINT FK_usuario_gana_premio_premios FOREIGN KEY (nombre_premio) REFERENCES premios (nombre_premio)
@@ -255,7 +255,7 @@ CREATE TABLE usuario_gana_premio (
 -- usuario - transferencia
 
 CREATE TABLE usuario_emite_transferencia (
-    username varchar(20),
+    username varchar(100),
     id_transferencia integer,
     CONSTRAINT PK_usuario_emite_transferencia PRIMARY KEY (username, id_transferencia),
     CONSTRAINT FK_usuario_emite_transferencia_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
@@ -263,7 +263,7 @@ CREATE TABLE usuario_emite_transferencia (
 );
 
 CREATE TABLE usuario_percibe_transferencia (
-    username varchar(20),
+    username varchar(100),
     id_transferencia integer,
     CONSTRAINT PK_usuario_percibe_transferencia PRIMARY KEY (username, id_transferencia),
     CONSTRAINT FK_usuario_percibe_transferencia_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
@@ -273,16 +273,16 @@ CREATE TABLE usuario_percibe_transferencia (
 -- usuario - usuario
 
 CREATE TABLE usuario_bloquea_usuario (
-    username varchar(20),
-    username_bloqueado varchar(20),
+    username varchar(100),
+    username_bloqueado varchar(100),
     CONSTRAINT PK_usuario_bloquea_usuario PRIMARY KEY (username, username_bloqueado),
     CONSTRAINT FK_usuario_bloquea_usuario_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
     CONSTRAINT FK_usuario_bloquea_usuario_usuarios_bloqueados FOREIGN KEY (username_bloqueado) REFERENCES usuarios (username)
 );
 
 CREATE TABLE usuario_sigue_usuario (
-    username varchar(20),
-    username_seguido varchar(20),
+    username varchar(100),
+    username_seguido varchar(100),
     CONSTRAINT PK_usuario_sigue_usuario PRIMARY KEY (username, username_seguido),
     CONSTRAINT FK_usuario_sigue_usuario_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
     CONSTRAINT FK_usuario_sigue_usuario_usuarios_seguidos FOREIGN KEY (username_seguido) REFERENCES usuarios (username)
@@ -291,7 +291,7 @@ CREATE TABLE usuario_sigue_usuario (
 -- usuario - mensaje
 
 CREATE TABLE usuario_envia_mensaje_privado (
-    username varchar(20),
+    username varchar(100),
     id_mensaje integer,
     CONSTRAINT PK_usuario_envia_mensaje_privado PRIMARY KEY (username, id_mensaje),
     CONSTRAINT FK_usuario_envia_mensaje_privado_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
@@ -299,7 +299,7 @@ CREATE TABLE usuario_envia_mensaje_privado (
 );
 
 CREATE TABLE usuario_recibe_mensaje_privado (
-    username varchar(20),
+    username varchar(100),
     id_mensaje integer,
     CONSTRAINT PK_usuario_recibe_mensaje_privado PRIMARY KEY (username, id_mensaje),
     CONSTRAINT FK_usuario_recibe_mensaje_privado_usuarios FOREIGN KEY (username) REFERENCES usuarios (username),
