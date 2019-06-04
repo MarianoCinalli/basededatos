@@ -9,3 +9,4 @@
 
 - [Mariano Cinalli](https://github.com/MarianoCinalli)
 - [Victor Bravo](https://github.com/victorbravoarroyo)
+- [Roger Mantilla](https://github.com/rmantilla02)
